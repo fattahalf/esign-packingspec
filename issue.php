@@ -1,6 +1,8 @@
 <?php
 //Redirect ke Login Page jika User belum Login
 session_start();
+
+// include 'upload_file.php';
 if (empty($_SESSION['loginStatus']) || $_SESSION['loginStatus'] == '') {
   header("Location: login.php");
   die();

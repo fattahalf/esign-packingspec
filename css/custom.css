@@ -1,1 +1,13 @@
-/* your styles go here */
+.tableFixHead {
+    overflow-y: auto;
+    height: 55vh;
+}
+
+.tableFixHead thead th {
+    position: sticky;
+    top: 0;
+}
+
+.tableFixHead th {
+    background: white;
+}
