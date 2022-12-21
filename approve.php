@@ -116,8 +116,8 @@
         </header>
         <!--Table-->
         <section class="tables">
-          <div class="container-fluid" >
-            <div class="row gy-4" >
+          <div class="container-fluid">
+            <div class="row gy-4">
               <div class="col-lg-6" style=" height: 70vh;">
                 <div class="card mb-4 " style="height: 70vh;">
                   <div class="card-header">
@@ -126,8 +126,8 @@
                     <h3 class="h4 mb-0">Issued by Prod. Engineering Dept.</h3>
                   </div>
                   <div class="card-body">
-                      <div class="table-responsive">
-                        <div class="tableFixHead">
+                    <div class="table-responsive">
+                      <div class="tableFixHead">
 
                         <!-- <div class="scrollable-table"> -->
                         <table class="table mb-0">
@@ -135,6 +135,7 @@
                             <tr>
                               <th>File Name</th>
                               <th>PIC</th>
+                              <th>Action</th>
                               <!-- <th>Last Approval</th>
                               <th>Last Update Time</th> -->
                             </tr>
@@ -143,13 +144,25 @@
                             <tr>
                               <?php
                             // print("<pre>".print_r($documents,true)."</pre>");
-                            $sql = "SELECT id, filename, file_owner, last_approval, update_at FROM files";
+                            // $sql = "SELECT id, filename, file_owner, last_approval, update_at FROM files";
                             $sql = "SELECT id, filename, file_owner FROM files";
                             $result = $connection->query($sql);
                             if ($result->num_rows > 0) {
                               while($row = $result->fetch_assoc()) {
                               // echo "<tr><td>" . $row["filename"] . "</td><td>" . $row["file_owner"] . "</td><td>" . $row["last_approval"] . "</td><td>" . $row["update_at"] . "</td></tr>";
-                              echo "<tr><td ><button class='btn btn-primary' id='imageclick""'>" . $row["filename"] . "</button class='btn btn-primary'></td><td>" . $row["file_owner"] . "</td></tr>";
+                              echo "  <tr>
+                                        <td>" . $row["filename"] . "</td>
+                                        <td>" . $row["file_owner"] . "</td>
+                                        <td>
+                                          <button type='button' onclick='babi(`" . $row["filename"] . "`)' class='btn btn-info' data-bs-toggle='modal' data-bs-target='#approvedocModal'>
+                                            Approve
+                                          </button>
+                                          <button type='button' class='btn btn-danger' data-bs-toggle='modal' data-bs-target='#exampleModal'>
+                                            Remove
+                                          </button>                                        
+                                        </td>  
+                                      </tr>
+                              ";
                             }
                             echo "</table>";
                             } else { echo "0 results"; }
@@ -164,6 +177,28 @@
                 </div>
               </div>
         </section>
+        
+        <!--Modal Approval-->
+        <div class="modal fade" id="approvedocModal" tabindex="-1" aria-labelledby="approveModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="approveModalLabel">Approve a Document</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="text-center">
+                  <!-- <input type="text" id="babihutan" > -->
+                  <img src="" id="imgdata" alt="" width="400">
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <!-- Page Footer-->
         <footer class="position-absolute bottom-0 bg-darkBlue text-white text-center py-3 w-100 text-xs" id="footer">
@@ -179,6 +214,17 @@
     </div>
   </div>
   <!-- JavaScript files-->
+  <script type="text/javascript" src="js/jquery.js"></script>
+  <script type="text/javascript" src="js/jquery.form.min.js"></script>
+  <script>
+    function babi(as) {
+      var a = as
+      // alert(a)
+      // document.getElementById("babihutan").value = a;
+      document.querySelector("#imgdata").src = "http://localhost/esign/esign-packingspec/packing-spec/1/XJ55075/"+a;
+    }
+  </script>
+
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="vendor/chart.js/Chart.min.js"></script>
   <script src="vendor/just-validate/js/just-validate.min.js"></script>
@@ -216,13 +262,13 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
     integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
-    <script type="text/javascript" src="js/jquery.js"></script>
-    <script type="text/javascript" src="js/jquery.form.min.js"></script>
-    <script>
-      $( "#imageclick" ).click(function() {
-        alert( "Handler for .click() called." );
-      });
-    </script>
-  </body>
+  <script type="text/javascript" src="js/jquery.js"></script>
+  <script type="text/javascript" src="js/jquery.form.min.js"></script>
+  <script>
+    $("#imageclick").click(function () {
+      alert("Handler for .click() called.");
+    });
+  </script>
+</body>
 
 </html>
