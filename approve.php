@@ -117,8 +117,8 @@
         <!--Table-->
         <section class="tables">
           <div class="container-fluid">
-            <div class="row gy-4">
-              <div class="col-lg-6" style=" height: 70vh;">
+            <div class="row gy-1">
+              <div class="col-lg-0" style=" height: 70vh;">
                 <div class="card mb-4 " style="height: 70vh;">
                   <div class="card-header">
                     <div class="card-close">
@@ -135,6 +135,11 @@
                             <tr>
                               <th>File Name</th>
                               <th>PIC</th>
+                              <th>Location</th>
+                              <th>Revise Note</th>
+                              <th>Revise From</th>
+                              <th>Issued on</th>
+                              <th>Last Update</th>
                               <th>Action</th>
                               <!-- <th>Last Approval</th>
                               <th>Last Update Time</th> -->
@@ -144,17 +149,22 @@
                             <tr>
                               <?php
                             // print("<pre>".print_r($documents,true)."</pre>");
-                            // $sql = "SELECT id, filename, file_owner, last_approval, update_at FROM files";
-                            $sql = "SELECT id, filename, file_owner FROM files";
+                            $username = $_SESSION['username'];
+                            $sql = "SELECT id, file_name, file_owner, file_location, file_revise_note, revise_from, issued_on, last_update_on FROM files WHERE file_owner='$username' OR ";
                             $result = $connection->query($sql);
                             if ($result->num_rows > 0) {
                               while($row = $result->fetch_assoc()) {
                               // echo "<tr><td>" . $row["filename"] . "</td><td>" . $row["file_owner"] . "</td><td>" . $row["last_approval"] . "</td><td>" . $row["update_at"] . "</td></tr>";
                               echo "  <tr>
-                                        <td>" . $row["filename"] . "</td>
+                                        <td>" . $row["file_name"] . "</td>
                                         <td>" . $row["file_owner"] . "</td>
+                                        <td>" . $row["file_location"] . "</td>
+                                        <td>" . $row["file_revise_note"] . "</td>
+                                        <td>" . $row["revise_from"] . "</td>
+                                        <td>" . $row["issued_on"] . "</td>
+                                        <td>" . $row["last_update_on"] . "</td>
                                         <td>
-                                          <button type='button' onclick='babi(`" . $row["filename"] . "`)' class='btn btn-info' data-bs-toggle='modal' data-bs-target='#approvedocModal'>
+                                          <button type='button' onclick='showspec(`" . $row["file_name"] . "`)' class='btn btn-info' data-bs-toggle='modal' data-bs-target='#approvedocModal'>
                                             Approve
                                           </button>
                                           <button type='button' class='btn btn-danger' data-bs-toggle='modal' data-bs-target='#exampleModal'>
@@ -217,11 +227,11 @@
   <script type="text/javascript" src="js/jquery.js"></script>
   <script type="text/javascript" src="js/jquery.form.min.js"></script>
   <script>
-    function babi(as) {
-      var a = as
+    function showspec(filename) {
+      var _filename = filename
       // alert(a)
       // document.getElementById("babihutan").value = a;
-      document.querySelector("#imgdata").src = "http://localhost/esign/esign-packingspec/packing-spec/1/XJ55075/"+a;
+      document.querySelector("#imgdata").src = "http://localhost/esign/esign-packingspec/packing-spec/1/XJ55075/"+_filename;
     }
   </script>
 

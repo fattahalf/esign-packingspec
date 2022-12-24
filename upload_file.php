@@ -11,8 +11,8 @@
             $temp_x = explode('.', $file_name[$i]);
             $extension = strtolower(end($temp_x));
             if(in_array($extension, $allowed_extensiion) == true) {
-                move_uploaded_file($file_temp[$i], 'packing-spec/1/'. $username .'/'. $file_name[$i]);
-                $query = mysqli_query($connection, "INSERT INTO files VALUES(NULL, '$file_name[$i]','$username')");
+                move_uploaded_file($file_temp[$i], 'packing-spec/Start Issued/'. $username .'/'. $file_name[$i]);
+                $query = mysqli_query($connection, "INSERT INTO files VALUES(NULL, '$file_name[$i]','$username', 'Start Issued', NULL, NULL, DEFAULT, current_timestamp())");
             } 
         }
     }
