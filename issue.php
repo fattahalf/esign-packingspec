@@ -109,54 +109,6 @@ if (empty($_SESSION['loginStatus']) || $_SESSION['loginStatus'] == '') {
           </div>
         </header>
 
-        <!-- User Dashboard -->
-        <section class="pb-0">
-          <div class="container-fluid">
-            <div class="card mb-3">
-              <div class="card-body">
-                <div class="row gx-5 bg-white">
-                  <!-- Item -->
-                  <div class="col-xl-4 col-sm-6 py-4 border-lg-end border-gray-200">
-                    <div class="d-flex align-items-center">
-                      <div class="mx-3">
-                        <h6 class="h4 fw-light text-gray-600 mb-3">Issued<br>Documents</h6>
-                        <div class="progress" style="height: 4px">
-                          <div class="progress-bar bg-violet" role="progressbar" style="width: 25%; height: 4px;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                      </div>
-                      <div class="number"><strong class="text-lg"><?php echo $_SESSION['summaryIssued']; ?></strong></div>
-                    </div>
-                  </div>
-                  <!-- Item -->
-                  <div class="col-xl-4 col-sm-6 py-4 border-lg-end border-gray-200">
-                    <div class="d-flex align-items-center">
-                      <div class="mx-3">
-                        <h6 class="h4 fw-light text-gray-600 mb-3">Need<br>Revise</h6>
-                        <div class="progress" style="height: 4px">
-                          <div class="progress-bar bg-green" role="progressbar" style="width: 40%; height: 4px;" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                      </div>
-                      <div class="number"><strong class="text-lg"><?php echo $_SESSION['summaryNeedRevise']; ?></strong></div>
-                    </div>
-                  </div>
-                  <!-- Item -->
-                  <div class="col-xl-4 col-sm-6 py-4">
-                    <div class="d-flex align-items-center">
-                      <div class="mx-3">
-                        <h6 class="h4 fw-light text-gray-600 mb-3">Fully<br>Approved</h6>
-                        <div class="progress" style="height: 4px">
-                          <div class="progress-bar bg-orange" role="progressbar" style="width: 50%; height: 4px;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                      </div>
-                      <div class="number"><strong class="text-lg"><?php echo $_SESSION['summaryApproved']; ?></strong></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
         <!--Document Upload -->
         <script type="text/javascript" src="js/jquery.js"></script>
         <script type="text/javascript" src="js/jquery.form.min.js"></script>

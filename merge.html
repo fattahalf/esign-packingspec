@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<canvas id="canvas_id" width="2480" height="3508" style="border:1px solid #000000;"></canvas>
+<button value="1" id="download">jj</button>
+<script src="js/jquery.js"></script>
+<script>
+    var canvas = document.getElementById('canvas_id');
+    var context = canvas.getContext('2d');
+
+    var imageObj1 = new Image();
+    imageObj1.src = 'packing-spec/under-approval/BMKF56580000.jpg';
+
+    imageObj1.onload = function () {
+        imageObj1.width = 10;
+        imageObj1.height = 10;
+        context.drawImage(imageObj1, 0, 0, 2480, 3508);
+    };
+
+    var imageObj2 = new Image();
+    imageObj2.src = "packing-spec/TTD.jpg"
+    imageObj2.onload = function () {
+        context.drawImage(imageObj2, 2320, 3270, 70, 170);
+    };
+
+    var download = document.getElementById("download");
+    var image = document.getElementById("canvas_id").toDataURL("image/png")
+        .replace("image/jpg", "image/octet-stream");
+
+    download.setAttribute("href", image);
+</script>
+
+</html>
