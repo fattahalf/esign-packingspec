@@ -27,16 +27,11 @@
   <!-- Custom stylesheet - for your changes-->
   <link rel="stylesheet" href="css/custom.css">
   <!-- Favicon-->
-  
+
   <link rel="shortcut icon" href="img/favicon.ico">
-  
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js">
-    </script>
-  <!-- Tweaks for older IEs--><!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
-        
-    
+  </script>
 </head>
 
 <body>
@@ -154,7 +149,7 @@
                           <tbody>
                             <tr>
                               <?php
-                            // print("<pre>".print_r($documents,true)."</pre>");
+                            // print("  <pre>".print_r($documents,true)."</pre>");
                             $files = mysqli_query($connection,"SELECT * FROM files");
                             $file_data = mysqli_fetch_assoc($files);
                             $account_location = $_SESSION['role'];
@@ -237,16 +232,17 @@
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
                   data-bs-target="#checkDocModal">Cancel</button>
-                <button id="mergeButton" type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="merge();">Yes</button>
+                <button id="mergeButton" type="button" class="btn btn-success" data-bs-dismiss="modal"
+                  onclick="merge();">Yes</button>
               </div>
             </div>
           </div>
         </div>
-        <canvas id="canvas_id"  width="2480" height="3508" style="border:1px solid #000000;"></canvas>
-        
-		<div id="img" style="display:none;">
-			<img src="" id="newimg" class="top" />
-		</div>
+        <!-- <canvas id="canvas_id" width="2480" height="3508" style="border:1px solid #000000;"></canvas> -->
+
+        <div id="img" style="display:none;">
+          <img src="" id="newimg" class="top" />
+        </div>
 
         <!-- Page Footer-->
         <footer class="position-absolute bottom-0 bg-darkBlue text-white text-center py-3 w-100 text-xs" id="footer">
@@ -277,27 +273,27 @@
       localStorage.setItem('tempfile', filename);
     }
     $(function () {
-            $("#mergeButton").click(function () {
-                html2canvas(document.querySelector("#canvas_id"), {
-                    onrendered: function (canvas) {
-                        var imgsrc = canvas.toDataURL("image/png");
-                        console.log(imgsrc);
-                        // $("#newimg").attr('src', imgsrc);
-                        // $("#img").show();
-                        var dataURL = canvas.toDataURL();
-                        $.ajax({
-                            type: "POST",
-                            url: "script.php",
-                            data: {
-                                imgBase64: dataURL
-                            }
-                        }).done(function (o) {
-                            console.log('saved');
-                        });
-                    }
-                });
+      $("#mergeButton").click(function () {
+        html2canvas(document.querySelector("#canvas_id"), {
+          onrendered: function (canvas) {
+            var imgsrc = canvas.toDataURL("image/png");
+            console.log(imgsrc);
+            // $("#newimg").attr('src', imgsrc);
+            // $("#img").show();
+            var dataURL = canvas.toDataURL();
+            $.ajax({
+              type: "POST",
+              url: "script.php",
+              data: {
+                imgBase64: dataURL
+              }
+            }).done(function (o) {
+              console.log('saved');
             });
+          }
         });
+      });
+    });
 
   </script>
 
@@ -317,67 +313,35 @@
       var imageObj1 = new Image();
       const tempDoc = localStorage.getItem('tempfile');
       imageObj1.src = "http://localhost/esign/esign-packingspec/packing-spec/under-approval/" + tempDoc;
-      
+
       imageObj1.onload = function () {
-        // imageObj1.width = 10;
-        // imageObj1.height = 10;
         context.drawImage(imageObj1, 0, 0, 2480, 3508);
       };
 
       var imageObj2 = new Image();
-      imageObj2.src = "http://localhost/esign/esign-packingspec/signature/" + "<?php echo $_SESSION['username']?>" +".jpg";
+      imageObj2.src = "http://localhost/esign/esign-packingspec/signature/" + "<?php echo $_SESSION['username']?>" + ".jpg";
       imageObj2.onload = function () {
         context.drawImage(imageObj2, 200, 700, 1000, 1700);
       };
-
-      // var download = document.getElementById("mergeButton");
-      // var image = document.getElementById("canvas_id").toDataURL("image/jpg")
-      //   .replace("image/jpg", "image/octet-stream");
-      // download.setAttribute("href", image);
-      // document.getElementById('canvas_id').src = image;
-
-
-      html2canvas($("#canvas_id"), {
-                    onrendered: function (canvas) {
-                        var imgsrc = canvas.toDataURL("image/jpg");
-                        console.log(imgsrc);
-                        $("#newimg").attr('src', imgsrc);
-                        $("#img").show();
-                        var dataURL = canvas.toDataURL();
-                        $.ajax({
-                            type: "POST",
-                            url: "script.php",
-                            data: {
-                                imgBase64: dataURL
-                            }
-                        }).done(function (o) {
-                            console.log('saved');
-                        });
-                    }
-                });
     }
-      // ------------------------------------------------------- //
-      //   Inject SVG Sprite - 
-      //   see more here 
-      //   https://css-tricks.com/ajaxing-svg-sprite/
-      // ------------------------------------------------------ //
-      function injectSvgSprite(path) {
 
-        var ajax = new XMLHttpRequest();
-        ajax.open("GET", path, true);
-        ajax.send();
-        ajax.onload = function (e) {
-          var div = document.createElement("div");
-          div.className = 'd-none';
-          div.innerHTML = ajax.responseText;
-          document.body.insertBefore(div, document.body.childNodes[0]);
-        }
-      }
-      // this is set to BootstrapTemple website as you cannot 
-      // inject local SVG sprite (using only 'icons/orion-svg-sprite.svg' path)
-      // while using file:// protocol
-      // pls don't forget to change to your domain :)
-      injectSvgSprite('https://bootstraptemple.com/files/icons/orion-svg-sprite.svg');
+    // function injectSvgSprite(path) {
+
+    //   var ajax = new XMLHttpRequest();
+    //   ajax.open("GET", path, true);
+    //   ajax.send();
+    //   ajax.onload = function (e) {
+    //     var div = document.createElement("div");
+    //     div.className = 'd-none';
+    //     div.innerHTML = ajax.responseText;
+    //     document.body.insertBefore(div, document.body.childNodes[0]);
+    //   }
+    // }
+    // this is set to BootstrapTemple website as you cannot 
+    // inject local SVG sprite (using only 'icons/orion-svg-sprite.svg' path)
+    // while using file:// protocol
+    // pls don't forget to change to your domain :)
+    injectSvgSprite('https://bootstraptemple.com/files/icons/orion-svg-sprite.svg');
 
 
   </script>
