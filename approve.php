@@ -6,6 +6,21 @@
           header("Location: login.php");
           die();
       }
+      function mergedoc($sources, $destinations, $signatures, $mr, $mb)
+      {
+        $source = $sources; //namefile.jpg
+        $destination = $destinations; //destination folder
+        $watermark = imagecreatefrompng($signatures); //ttd.png
+        $margin_right = $mr; //10
+        $margin_bottom = $mb; //10
+        $sx = imagesx($watermark);
+        $sy = imagesy($watermark);
+        $img = imagecreatefromjpeg($source);
+        imagecopy($img, $watermark, imagesx($img) - $sx - $margin_right, imagesy($img) - $sy - $margin_bottom, 0, 0, $sx, $sy);
+        $i = imagejpeg($img, $destination.'/'.$source, 100);
+        imagedestroy($img);
+      }
+      
 ?>
 
 <!DOCTYPE html>
@@ -228,6 +243,9 @@
               </div>
               <div class="modal-body">
                 Are you sure want to Sign this document?
+                <?php
+                echo $_SESSION['role'];
+                ?>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
@@ -269,31 +287,32 @@
 
     function showspec(filename) {
       var _filename = filename
-      document.querySelector("#imgdata").src = "http://localhost/esign/esign-packingspec/packing-spec/under-approval/" + _filename;
+      document.querySelector("#imgdata").src = "packing-spec/under-approval/" + _filename;
       localStorage.setItem('tempfile', filename);
+      '<%=Session["tempfileee"]%>' = filename;
     }
-    $(function () {
-      $("#mergeButton").click(function () {
-        html2canvas(document.querySelector("#canvas_id"), {
-          onrendered: function (canvas) {
-            var imgsrc = canvas.toDataURL("image/png");
-            console.log(imgsrc);
-            // $("#newimg").attr('src', imgsrc);
-            // $("#img").show();
-            var dataURL = canvas.toDataURL();
-            $.ajax({
-              type: "POST",
-              url: "script.php",
-              data: {
-                imgBase64: dataURL
-              }
-            }).done(function (o) {
-              console.log('saved');
-            });
-          }
-        });
-      });
-    });
+    // $(function () {
+    //   $("#mergeButton").click(function () {
+    //     html2canvas(document.querySelector("#canvas_id"), {
+    //       onrendered: function (canvas) {
+    //         var imgsrc = canvas.toDataURL("image/png");
+    //         console.log(imgsrc);
+    //         // $("#newimg").attr('src', imgsrc);
+    //         // $("#img").show();
+    //         var dataURL = canvas.toDataURL();
+    //         $.ajax({
+    //           type: "POST",
+    //           url: "script.php",
+    //           data: {
+    //             imgBase64: dataURL
+    //           }
+    //         }).done(function (o) {
+    //           console.log('saved');
+    //         });
+    //       }
+    //     });
+    //   });
+    // });
 
   </script>
 
@@ -312,14 +331,14 @@
 
       var imageObj1 = new Image();
       const tempDoc = localStorage.getItem('tempfile');
-      imageObj1.src = "http://localhost/esign/esign-packingspec/packing-spec/under-approval/" + tempDoc;
+      imageObj1.src = "packing-spec/under-approval/" + tempDoc;
 
       imageObj1.onload = function () {
         context.drawImage(imageObj1, 0, 0, 2480, 3508);
       };
 
       var imageObj2 = new Image();
-      imageObj2.src = "http://localhost/esign/esign-packingspec/signature/" + "<?php echo $_SESSION['username']?>" + ".jpg";
+      imageObj2.src = "signature/" + "<?php echo $_SESSION['username']?>" + ".jpg";
       imageObj2.onload = function () {
         context.drawImage(imageObj2, 200, 700, 1000, 1700);
       };
