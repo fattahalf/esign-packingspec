@@ -21,21 +21,6 @@
         imagedestroy($img);
       }
       
-      function mergedoc($sources, $signatures, $mr, $mb)
-      {
-        $source = $sources; //namefile.jpg
-        // $destination = $sources; //destination folder
-        $watermark = imagecreatefrompng($signatures); //ttd.png
-        $margin_right = $mr; //10
-        $margin_bottom = $mb; //10
-        $sx = imagesx($watermark);
-        $sy = imagesy($watermark);
-        $img = imagecreatefromjpeg($source);
-        imagecopy($img, $watermark, imagesx($img) - $sx - $margin_right, imagesy($img) - $sy - $margin_bottom, 0, 0, $sx, $sy);
-        $i = imagejpeg($img, $source, 100);
-        imagedestroy($img);
-      }
-      
 ?>
 
 <!DOCTYPE html>
@@ -194,7 +179,7 @@
                                         <!-- <td>" . $row["issued_on"] . "</td>
                                         <td>" . $row["last_update_on"] . "</td> -->
                                         <td>
-                                          <button type='button' onclick='showspec(`" . $row["file_name"] . "`)' class='btn btn-info' data-bs-toggle='modal' data-bs-target='#checkDocModal'>
+                                          <button type='button' onclick='showspec(`" . $row["file_name"] . "`,`" . $row["id"] . "`)' class='btn btn-info' data-bs-toggle='modal' data-bs-target='#checkDocModal'>
                                             Check
                                           </button>
                                           <button type='button' class='btn btn-danger' data-bs-toggle='modal' data-bs-target='#exampleModal'>
@@ -223,6 +208,7 @@
         <div class="modal fade" id="checkDocModal" tabindex="-1" role="dialog">
           <div class="modal-dialog">
             <div class="modal-content">
+              <form action="revision.php" method="get">
               <div class="modal-header">
                 <h1 class="modal-title fs-5" id="checkDocModalLabel">Approve a Document</h1>
                 <!--Button Close-->
@@ -233,19 +219,20 @@
                   <img src="" id="imgdata" alt="" width="400">
                 </div>
               </div>
-              <form>
                 <div class="form-group m-4">
                   <label for="exampleFormControlTextarea1">Give Revise</label>
-                  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                  <input type="hidden" id="idfile" name="idfile">
+                  <textarea name="revision" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                 </div>
-              </form>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <input type="submit" value="Revise">
                 <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Revise</button>
                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#approveDocModal">
                   Approve Document
                 </button>
               </div>
+              </form>
             </div>
           </div>
         </div>
@@ -307,12 +294,13 @@
       $('#approveDocModal').modal('show');
     });
 
-    function showspec(filename) {
+    function showspec(filename,id) {
       var _filename = filename
       document.querySelector("#imgdata").src = "packing-spec/under-approval/" + _filename;
       document.querySelector("#imgdata").src = "packing-spec/under-approval/" + _filename;
       localStorage.setItem('tempfile', filename);
       document.getElementById("testname").value = filename;
+      document.getElementById("idfile").value = id;
       document.cookie="profile_viewer_uid=1";
       document.getElementById("testname").value = filename;
       document.cookie="profile_viewer_uid=1";

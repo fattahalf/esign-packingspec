@@ -9,8 +9,8 @@
 
       $count_issued = new FilesystemIterator("packing-spec/under-approval", FilesystemIterator::SKIP_DOTS);
       $sum_issued = iterator_count($count_issued);
-      $count_issued = new FilesystemIterator("packing-spec/fully-approved", FilesystemIterator::SKIP_DOTS);
-      $sum_approved = iterator_count($count_issued);
+      // $count_issued = new FilesystemIterator("packing-spec/fully-approved", FilesystemIterator::SKIP_DOTS);
+      // $sum_approved = iterator_count($count_issued);
       $sum_needRevise = 0;
 ?>
 
