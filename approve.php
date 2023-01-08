@@ -21,6 +21,21 @@
         imagedestroy($img);
       }
       
+      function mergedoc($sources, $signatures, $mr, $mb)
+      {
+        $source = $sources; //namefile.jpg
+        // $destination = $sources; //destination folder
+        $watermark = imagecreatefrompng($signatures); //ttd.png
+        $margin_right = $mr; //10
+        $margin_bottom = $mb; //10
+        $sx = imagesx($watermark);
+        $sy = imagesy($watermark);
+        $img = imagecreatefromjpeg($source);
+        imagecopy($img, $watermark, imagesx($img) - $sx - $margin_right, imagesy($img) - $sy - $margin_bottom, 0, 0, $sx, $sy);
+        $i = imagejpeg($img, $source, 100);
+        imagedestroy($img);
+      }
+      
 ?>
 
 <!DOCTYPE html>
@@ -247,6 +262,7 @@
               </div>
               <div class="modal-body">
                 Are you sure want to Sign this document?
+                
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
@@ -284,6 +300,9 @@
   <script type="text/javascript" src="js/jquery.form.min.js"></script>
 
   <script>
+    function testtt(){
+      console.log("ASdsa");
+    }
     $("#confirmApprove").on("click", function () {
       $('#approveDocModal').modal('show');
     });
@@ -291,7 +310,10 @@
     function showspec(filename) {
       var _filename = filename
       document.querySelector("#imgdata").src = "packing-spec/under-approval/" + _filename;
+      document.querySelector("#imgdata").src = "packing-spec/under-approval/" + _filename;
       localStorage.setItem('tempfile', filename);
+      document.getElementById("testname").value = filename;
+      document.cookie="profile_viewer_uid=1";
       document.getElementById("testname").value = filename;
       document.cookie="profile_viewer_uid=1";
     }
@@ -313,12 +335,14 @@
       var imageObj1 = new Image();
       const tempDoc = localStorage.getItem('tempfile');
       imageObj1.src = "packing-spec/under-approval/" + tempDoc;
+      imageObj1.src = "packing-spec/under-approval/" + tempDoc;
 
       imageObj1.onload = function () {
         context.drawImage(imageObj1, 0, 0, 2480, 3508);
       };
 
       var imageObj2 = new Image();
+      imageObj2.src = "signature/" + "<?php echo $_SESSION['username']?>" + ".jpg";
       imageObj2.src = "signature/" + "<?php echo $_SESSION['username']?>" + ".jpg";
       imageObj2.onload = function () {
         context.drawImage(imageObj2, 200, 700, 1000, 1700);

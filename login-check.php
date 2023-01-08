@@ -19,6 +19,17 @@ if($check > 0){
 	$id_role = $AR_loginData['id_role'];
 	$roleData = mysqli_query($connection,"SELECT * FROM role WHERE id_role = $id_role");
 	$AR_roleData = mysqli_fetch_assoc($roleData);
+<<<<<<< HEAD
+=======
+
+	// $progressSumary = mysqli_query($connection, "SELECT * FROM summary");
+	// $AR_summaryData = mysqli_fetch_assoc($progressSumary);
+
+	// $_SESSION['summaryIssued'] = $AR_summaryData['issued'];
+	// $_SESSION['summaryNeedRevise'] = $AR_summaryData['need_revise'];
+	// $_SESSION['summaryApproved'] = $AR_summaryData['approved'];
+
+>>>>>>> 732897a18b03c32ed637ed7fba2042aaa8fbd852
 	//For Common User
     if($AR_roleData['role_name']!='Superuser'){
         // buat session login dan username
