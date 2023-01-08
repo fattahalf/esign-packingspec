@@ -2,12 +2,8 @@
 session_start();
 $sources = "packing-spec/under-approval/".$_GET['sources'];
 $signatures = "signature/".$_SESSION['username'].".png";
-$mr = 10;
-$mb = 10;
-// $sources = $_GET['sources'];
-// $signatures = $_GET['signatures'];
-// $mr = $_GET['mr'];
-// $mb = $_GET['mb'];
+$mr = $_SESSION['mr'];
+$mb = $_SESSION['mb'];
 $source = $sources; //namefile.jpg
 $watermark = imagecreatefrompng($signatures); //ttd.png
 $margin_right = $mr; //10
