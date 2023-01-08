@@ -226,8 +226,7 @@
                 </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <input type="submit" value="Revise">
-                <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Revise</button>
+                <input type="submit" class="btn btn-warning" data-bs-dismiss="modal" value="Revise">
                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#approveDocModal">
                   Approve Document
                 </button>

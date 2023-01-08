@@ -26,9 +26,31 @@ if($check > 0){
 		$_SESSION['name'] = $AR_loginData['nama_user'];
 		$_SESSION['role'] = $AR_roleData['role_name'];
 		if ($_SESSION['role'] == 'Staff PE') {
-			$_SESSION['mr'] = 100;
+			$_SESSION['mr'] = 50;
+			$_SESSION['mb'] = 100;
+		} else if ($_SESSION['role'] == 'SPV PE') {
+			$_SESSION['mr'] = 200;
+			$_SESSION['mb'] = 100;
+		} else if ($_SESSION['role'] == 'MGR PE') {
+			$_SESSION['mr'] = 300;
+			$_SESSION['mb'] = 100;
+		} else if ($_SESSION['role'] == 'General Foreman Prod.') {
+			$_SESSION['mr'] = 400;
+			$_SESSION['mb'] = 100;
+		} else if ($_SESSION['role'] == 'MGR Prod') {
+			$_SESSION['mr'] = 500;
+			$_SESSION['mb'] = 100;
+		} else if ($_SESSION['role'] == 'Staff QA') {
+			$_SESSION['mr'] = 600;
+			$_SESSION['mb'] = 100;
+		} else if ($_SESSION['role'] == 'SPV QA') {
+			$_SESSION['mr'] = 700;
+			$_SESSION['mb'] = 100;
+		} else if ($_SESSION['role'] == 'MGR PE') {
+			$_SESSION['mr'] = 800;
 			$_SESSION['mb'] = 100;
 		}
+
 		$_SESSION['loginStatus'] = "Loggedin";
 		//Alihkan ke Dashboard Common User
 		header("location:index.php");
