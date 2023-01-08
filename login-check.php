@@ -20,15 +20,15 @@ if($check > 0){
 	$roleData = mysqli_query($connection,"SELECT * FROM role WHERE role_id = $id_role");
 	$AR_roleData = mysqli_fetch_assoc($roleData);
 
-	$progressSumary = mysqli_query($connection, "SELECT * FROM summary");
-	$AR_summaryData = mysqli_fetch_assoc($progressSumary);
+	// $progressSumary = mysqli_query($connection, "SELECT * FROM summary");
+	// $AR_summaryData = mysqli_fetch_assoc($progressSumary);
 
-	$_SESSION['summaryIssued'] = $AR_summaryData['issued'];
-	$_SESSION['summaryNeedRevise'] = $AR_summaryData['need_revise'];
-	$_SESSION['summaryApproved'] = $AR_summaryData['approved'];
+	// $_SESSION['summaryIssued'] = $AR_summaryData['issued'];
+	// $_SESSION['summaryNeedRevise'] = $AR_summaryData['need_revise'];
+	// $_SESSION['summaryApproved'] = $AR_summaryData['approved'];
 
 	//For Common User
-    if($id_role['role_name']!='Superuser'){
+    if($AR_roleData['role_name']!='Superuser'){
         // buat session login dan username
 		$_SESSION['username'] = $username;
 		$_SESSION['name'] = $AR_loginData['nama_user'];

@@ -6,10 +6,10 @@
           header("Location: login.php");
           die();
       }
-      function mergedoc($sources, $destinations, $signatures, $mr, $mb)
+      function mergedoc($sources, $signatures, $mr, $mb)
       {
         $source = $sources; //namefile.jpg
-        $destination = $destinations; //destination folder
+        // $destination = $sources; //destination folder
         $watermark = imagecreatefrompng($signatures); //ttd.png
         $margin_right = $mr; //10
         $margin_bottom = $mb; //10
@@ -17,7 +17,7 @@
         $sy = imagesy($watermark);
         $img = imagecreatefromjpeg($source);
         imagecopy($img, $watermark, imagesx($img) - $sx - $margin_right, imagesy($img) - $sy - $margin_bottom, 0, 0, $sx, $sy);
-        $i = imagejpeg($img, $destination.'/'.$source, 100);
+        $i = imagejpeg($img, $source, 100);
         imagedestroy($img);
       }
       
@@ -169,7 +169,7 @@
                             $file_data = mysqli_fetch_assoc($files);
                             $account_location = $_SESSION['role'];
 
-                            $sql = "SELECT id, file_name, file_owner, file_location, file_revise_note, revise_from, issued_on, last_update_on FROM files WHERE file_location='$account_location'";
+                            $sql = "SELECT id, file_name, file_owner, file_location, revise_from, issued_on, last_update_on FROM files WHERE file_location='$account_location'";
                             $result = $connection->query($sql);
                             if ($result->num_rows > 0) {
                               while($row = $result->fetch_assoc()) {
@@ -177,7 +177,6 @@
                                         <td>" . $row["file_name"] . "</td>
                                         <td>" . $row["file_owner"] . "</td>
                                         <td>" . $row["file_location"] . "</td>
-                                        <td>" . $row["file_revise_note"] . "</td>
                                         <td>" . $row["revise_from"] . "</td>
                                         <td>" . $row["issued_on"] . "</td>
                                         <td>" . $row["last_update_on"] . "</td>
@@ -243,15 +242,15 @@
               </div>
               <div class="modal-body">
                 Are you sure want to Sign this document?
-                <?php
-                echo $_SESSION['role'];
-                ?>
+                
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
                   data-bs-target="#checkDocModal">Cancel</button>
-                <button id="mergeButton" type="button" class="btn btn-success" data-bs-dismiss="modal"
-                  onclick="merge();">Yes</button>
+                <form action="sign.php" method="get">
+                  <input type="hidden" id="testname" name="sources">
+                  <input type="submit" class="btn btn-success">
+                </form>
               </div>
             </div>
           </div>
@@ -281,6 +280,9 @@
   <script type="text/javascript" src="js/jquery.form.min.js"></script>
 
   <script>
+    function testtt(){
+      console.log("ASdsa");
+    }
     $("#confirmApprove").on("click", function () {
       $('#approveDocModal').modal('show');
     });
@@ -289,31 +291,9 @@
       var _filename = filename
       document.querySelector("#imgdata").src = "packing-spec/under-approval/" + _filename;
       localStorage.setItem('tempfile', filename);
-      '<%=Session["tempfileee"]%>' = filename;
+      document.getElementById("testname").value = filename;
+      document.cookie="profile_viewer_uid=1";
     }
-    // $(function () {
-    //   $("#mergeButton").click(function () {
-    //     html2canvas(document.querySelector("#canvas_id"), {
-    //       onrendered: function (canvas) {
-    //         var imgsrc = canvas.toDataURL("image/png");
-    //         console.log(imgsrc);
-    //         // $("#newimg").attr('src', imgsrc);
-    //         // $("#img").show();
-    //         var dataURL = canvas.toDataURL();
-    //         $.ajax({
-    //           type: "POST",
-    //           url: "script.php",
-    //           data: {
-    //             imgBase64: dataURL
-    //           }
-    //         }).done(function (o) {
-    //           console.log('saved');
-    //         });
-    //       }
-    //     });
-    //   });
-    // });
-
   </script>
 
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -343,23 +323,6 @@
         context.drawImage(imageObj2, 200, 700, 1000, 1700);
       };
     }
-
-    // function injectSvgSprite(path) {
-
-    //   var ajax = new XMLHttpRequest();
-    //   ajax.open("GET", path, true);
-    //   ajax.send();
-    //   ajax.onload = function (e) {
-    //     var div = document.createElement("div");
-    //     div.className = 'd-none';
-    //     div.innerHTML = ajax.responseText;
-    //     document.body.insertBefore(div, document.body.childNodes[0]);
-    //   }
-    // }
-    // this is set to BootstrapTemple website as you cannot 
-    // inject local SVG sprite (using only 'icons/orion-svg-sprite.svg' path)
-    // while using file:// protocol
-    // pls don't forget to change to your domain :)
     injectSvgSprite('https://bootstraptemple.com/files/icons/orion-svg-sprite.svg');
 
 
