@@ -6,32 +6,46 @@
           header("Location: login.php");
           die();
       }
+      function mergedoc($sources, $signatures, $mr, $mb)
+      {
+        $source = $sources; //namefile.jpg
+        // $destination = $sources; //destination folder
+        $watermark = imagecreatefrompng($signatures); //ttd.png
+        $margin_right = $mr; //10
+        $margin_bottom = $mb; //10
+        $sx = imagesx($watermark);
+        $sy = imagesy($watermark);
+        $img = imagecreatefromjpeg($source);
+        imagecopy($img, $watermark, imagesx($img) - $sx - $margin_right, imagesy($img) - $sy - $margin_bottom, 0, 0, $sx, $sy);
+        $i = imagejpeg($img, $source, 100);
+        imagedestroy($img);
+      }
+      
 ?>
 
 <!DOCTYPE html>
 <html>
 
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Dashboard - Packing Spec E-Sign System</title>
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="robots" content="all,follow">
-  <!-- Google fonts - Poppins -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
-  <!-- Choices CSS-->
-  <link rel="stylesheet" href="vendor/choices.js/public/assets/styles/choices.min.css">
-  <!-- theme stylesheet-->
-  <link rel="stylesheet" href="css/style.default.css" id="theme-stylesheet">
-  <!-- Custom stylesheet - for your changes-->
-  <link rel="stylesheet" href="css/custom.css">
-  <!-- Favicon-->
-
-  <link rel="shortcut icon" href="img/favicon.ico">
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js">
-  </script>
+<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Dashboard - Packing Spec E-Sign System</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="all,follow">
+    <!-- Google fonts - Poppins -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700">
+    <!-- Choices CSS-->
+    <link rel="stylesheet" href="vendor/choices.js/public/assets/styles/choices.min.css">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="css/custom.css">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="img/favicon.ico">
+    <!-- Tweaks for older IEs--><!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
 </head>
 
 <body>
@@ -139,11 +153,9 @@
                               <th>Location</th>
                               <th>Revise Note</th>
                               <th>Revise From</th>
-                              <th>Issued on</th>
-                              <th>Last Update</th>
+                              <!-- <th>Issued on</th>
+                              <th>Last Update</th> -->
                               <th>Action</th>
-                              <!-- <th>Last Approval</th>
-                              <th>Last Update Time</th> -->
                             </tr>
                           </thead>
                           <tbody>
@@ -154,7 +166,7 @@
                             $file_data = mysqli_fetch_assoc($files);
                             $account_location = $_SESSION['role'];
 
-                            $sql = "SELECT id, file_name, file_owner, file_location, file_revise_note, revise_from, issued_on, last_update_on FROM files WHERE file_location='$account_location'";
+                            $sql = "SELECT id, file_name, file_owner, file_location, revise_note, revise_from, issued_on, last_update_on FROM files WHERE file_location='$account_location'";
                             $result = $connection->query($sql);
                             if ($result->num_rows > 0) {
                               while($row = $result->fetch_assoc()) {
@@ -162,10 +174,10 @@
                                         <td>" . $row["file_name"] . "</td>
                                         <td>" . $row["file_owner"] . "</td>
                                         <td>" . $row["file_location"] . "</td>
-                                        <td>" . $row["file_revise_note"] . "</td>
+                                        <td>" . $row["revise_note"] . "</td>
                                         <td>" . $row["revise_from"] . "</td>
-                                        <td>" . $row["issued_on"] . "</td>
-                                        <td>" . $row["last_update_on"] . "</td>
+                                        <!-- <td>" . $row["issued_on"] . "</td>
+                                        <td>" . $row["last_update_on"] . "</td> -->
                                         <td>
                                           <button type='button' onclick='showspec(`" . $row["file_name"] . "`)' class='btn btn-info' data-bs-toggle='modal' data-bs-target='#checkDocModal'>
                                             Check
@@ -206,8 +218,15 @@
                   <img src="" id="imgdata" alt="" width="400">
                 </div>
               </div>
+              <form>
+                <div class="form-group m-4">
+                  <label for="exampleFormControlTextarea1">Give Revise</label>
+                  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                </div>
+              </form>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Revise</button>
                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#approveDocModal">
                   Approve Document
                 </button>
@@ -232,8 +251,10 @@
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
                   data-bs-target="#checkDocModal">Cancel</button>
-                <button id="mergeButton" type="button" class="btn btn-success" data-bs-dismiss="modal"
-                  onclick="merge();">Yes</button>
+                <form action="sign.php" method="get">
+                  <input type="hidden" id="testname" name="sources">
+                  <input type="submit" value="Sign" class="btn btn-success">
+                </form>
               </div>
             </div>
           </div>
@@ -269,32 +290,11 @@
 
     function showspec(filename) {
       var _filename = filename
-      document.querySelector("#imgdata").src = "http://localhost/esign/esign-packingspec/packing-spec/under-approval/" + _filename;
+      document.querySelector("#imgdata").src = "packing-spec/under-approval/" + _filename;
       localStorage.setItem('tempfile', filename);
+      document.getElementById("testname").value = filename;
+      document.cookie="profile_viewer_uid=1";
     }
-    $(function () {
-      $("#mergeButton").click(function () {
-        html2canvas(document.querySelector("#canvas_id"), {
-          onrendered: function (canvas) {
-            var imgsrc = canvas.toDataURL("image/png");
-            console.log(imgsrc);
-            // $("#newimg").attr('src', imgsrc);
-            // $("#img").show();
-            var dataURL = canvas.toDataURL();
-            $.ajax({
-              type: "POST",
-              url: "script.php",
-              data: {
-                imgBase64: dataURL
-              }
-            }).done(function (o) {
-              console.log('saved');
-            });
-          }
-        });
-      });
-    });
-
   </script>
 
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -312,37 +312,33 @@
 
       var imageObj1 = new Image();
       const tempDoc = localStorage.getItem('tempfile');
-      imageObj1.src = "http://localhost/esign/esign-packingspec/packing-spec/under-approval/" + tempDoc;
+      imageObj1.src = "packing-spec/under-approval/" + tempDoc;
 
       imageObj1.onload = function () {
         context.drawImage(imageObj1, 0, 0, 2480, 3508);
       };
 
       var imageObj2 = new Image();
-      imageObj2.src = "http://localhost/esign/esign-packingspec/signature/" + "<?php echo $_SESSION['username']?>" + ".jpg";
+      imageObj2.src = "signature/" + "<?php echo $_SESSION['username']?>" + ".jpg";
       imageObj2.onload = function () {
         context.drawImage(imageObj2, 200, 700, 1000, 1700);
       };
     }
 
-    // function injectSvgSprite(path) {
+    function injectSvgSprite(path) {
+      
+      var ajax = new XMLHttpRequest();
+      ajax.open("GET", path, true);
+      ajax.send();
+      ajax.onload = function(e) {
+      var div = document.createElement("div");
+      div.className = 'd-none';
+      div.innerHTML = ajax.responseText;
+      document.body.insertBefore(div, document.body.childNodes[0]);
+      }
+  }
 
-    //   var ajax = new XMLHttpRequest();
-    //   ajax.open("GET", path, true);
-    //   ajax.send();
-    //   ajax.onload = function (e) {
-    //     var div = document.createElement("div");
-    //     div.className = 'd-none';
-    //     div.innerHTML = ajax.responseText;
-    //     document.body.insertBefore(div, document.body.childNodes[0]);
-    //   }
-    // }
-    // this is set to BootstrapTemple website as you cannot 
-    // inject local SVG sprite (using only 'icons/orion-svg-sprite.svg' path)
-    // while using file:// protocol
-    // pls don't forget to change to your domain :)
-    injectSvgSprite('https://bootstraptemple.com/files/icons/orion-svg-sprite.svg');
-
+    injectSvgSprite('https://bootstraptemple.com/files/icons/orion-svg-sprite.svg');       
 
   </script>
   <!-- FontAwesome CSS - loading as last, so it doesn't block rendering-->

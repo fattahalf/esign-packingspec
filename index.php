@@ -1,10 +1,17 @@
 <?php
       //Redirect ke Login Page jika User belum Login
+      include 'dbconnect.php';
       session_start();
       if(empty($_SESSION['loginStatus']) || $_SESSION['loginStatus'] == ''){
           header("Location: login.php");
           die();
       }
+
+      $count_issued = new FilesystemIterator("packing-spec/under-approval", FilesystemIterator::SKIP_DOTS);
+      $sum_issued = iterator_count($count_issued);
+      $count_issued = new FilesystemIterator("packing-spec/fully-approved", FilesystemIterator::SKIP_DOTS);
+      $sum_approved = iterator_count($count_issued);
+      $sum_needRevise = 0;
 ?>
 
 <!DOCTYPE html>
@@ -130,7 +137,7 @@
                             <div class="progress-bar bg-violet" role="progressbar" style="width: 25%; height: 4px;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                           </div>
                         </div>
-                        <div class="number"><strong class="text-lg"><?php echo $_SESSION['summaryIssued'];?></strong></div>
+                        <div class="number"><strong class="text-lg"><?php echo $sum_issued;?></strong></div>
                       </div>
                     </div>
                     <!-- Item -->
@@ -142,7 +149,7 @@
                             <div class="progress-bar bg-green" role="progressbar" style="width: 40%; height: 4px;" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
                           </div>
                         </div>
-                        <div class="number"><strong class="text-lg"><?php echo $_SESSION['summaryNeedRevise'];?></strong></div>
+                        <div class="number"><strong class="text-lg"><?php echo $sum_needRevise;?></strong></div>
                       </div>
                     </div>
                     <!-- Item -->
@@ -154,7 +161,7 @@
                             <div class="progress-bar bg-orange" role="progressbar" style="width: 50%; height: 4px;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                           </div>
                         </div>
-                        <div class="number"><strong class="text-lg"><?php echo $_SESSION['summaryApproved'];?></strong></div>
+                        <div class="number"><strong class="text-lg"><?php echo $sum_approved;?></strong></div>
                       </div>
                     </div>
                   </div>
@@ -189,27 +196,27 @@
                           <tbody>
                             <tr>
                               <td>Fattah</td>
-                              <td>10</td>
-                              <td>20</td>
-                              <td>30</td>
+                              <td>-</td>
+                              <td>-</td>
+                              <td>-</td>
                             </tr>
                             <tr>
                               <td>Handi</td>
-                              <td>40</td>
-                              <td>50</td>
-                              <td>60</td>
+                              <td>-</td>
+                              <td>-</td>
+                              <td>-</td>
                             </tr>
                             <tr>
                               <td>Shandy</td>
-                              <td>70</td>
-                              <td>80</td>
-                              <td>90</td>
+                              <td>-</td>
+                              <td>-</td>
+                              <td>-</td>
                             </tr>
                             <tr>
                               <td>Wilson</td>
-                              <td>100</td>
-                              <td>110</td>
-                              <td>120</td>
+                              <td>-</td>
+                              <td>-</td>
+                              <td>-</td>
                             </tr>
                           </tbody>
                         </table>
@@ -239,15 +246,15 @@
                           <tbody>
                             <tr>
                               <td>Adi Priyatna</td>
-                              <td>10</td>
-                              <td>20</td>
-                              <td>30</td>
+                              <td>-</td>
+                              <td>-</td>
+                              <td>-</td>
                             </tr>
                             <tr>
                               <td>Rian Haryanto</td>
-                              <td>40</td>
-                              <td>50</td>
-                              <td>60</td>
+                              <td>-</td>
+                              <td>-</td>
+                              <td>-</td>
                             </tr>
                             <tr>
                               <td>-</td>
@@ -286,26 +293,26 @@
                             </tr>
                           </thead>
                           <tbody>
+                          <tr>
+                              <td>Umed Taryana</td>
+                              <td>-</td>
+                              <td>-</td>
+                              <td>-</td>
+                            </tr>
                             <tr>
                               <td>Bambang T.W</td>
-                              <td>10</td>
-                              <td>20</td>
-                              <td>30</td>
+                              <td>-</td>
+                              <td>-</td>
+                              <td>-</td>
                             </tr>
                             <tr>
                               <td>Priyanto</td>
-                              <td>40</td>
-                              <td>50</td>
-                              <td>60</td>
-                            </tr>
-                            <tr>
-                              <td>Umed Taryana</td>
-                              <td>70</td>
-                              <td>80</td>
-                              <td>90</td>
-                            </tr>
-                            <tr>
                               <td>-</td>
+                              <td>-</td>
+                              <td>-</td>
+                            </tr>
+                            <tr>
+                              <td>M. Taufik Isom</td>
                               <td>-</td>
                               <td>-</td>
                               <td>-</td>
@@ -337,27 +344,27 @@
                           <tbody>
                             <tr>
                               <td>Heru Purwanto</td>
-                              <td>100</td>
-                              <td>110</td>
-                              <td>120</td>
+                              <td>-</td>
+                              <td>-</td>
+                              <td>-</td>
                             </tr>
                             <tr>
                               <td>Albar</td>
-                              <td>10</td>
-                              <td>20</td>
-                              <td>30</td>
+                              <td>-</td>
+                              <td>-</td>
+                              <td>-</td>
                             </tr>
                             <tr>
                               <td>Bangkit</td>
-                              <td>40</td>
-                              <td>50</td>
-                              <td>60</td>
+                              <td>-</td>
+                              <td>-</td>
+                              <td>-</td>
                             </tr>
                             <tr>
                               <td>Reza</td>
-                              <td>70</td>
-                              <td>80</td>
-                              <td>90</td>
+                              <td>-</td>
+                              <td>-</td>
+                              <td>-</td>
                             </tr>
                           </tbody>
                         </table>
@@ -411,9 +418,7 @@
       // inject local SVG sprite (using only 'icons/orion-svg-sprite.svg' path)
       // while using file:// protocol
       // pls don't forget to change to your domain :)
-      injectSvgSprite('https://bootstraptemple.com/files/icons/orion-svg-sprite.svg'); 
-      
-      
+      injectSvgSprite('https://bootstraptemple.com/files/icons/orion-svg-sprite.svg');       
     </script>
     <!-- FontAwesome CSS - loading as last, so it doesn't block rendering-->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
